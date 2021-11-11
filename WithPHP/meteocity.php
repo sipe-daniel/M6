@@ -10,10 +10,9 @@ $end = stripos($html, '<script', $offset = $start);
 $length = $end - $start;
 
 $htmlSection = substr($html, $start, $length);
+$dom = new DOMDocument;
+$dom->loadHTML($htmlSection);
 
-preg_match('/<meta property="og:title" content="(.+)\/>/', $htmlSection, $matches);
-
-echo $matches[1];
-
-$result = str_replace(array('"'), ' ', $matches[1]);
-echo $result;
+$xpath = new DOMXpath($dom);
+$tag = $xpath->query( '//meta[contains(@property,"og:title")]' );
+echo $tag[0]->getAttribute('content');
